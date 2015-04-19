@@ -42,6 +42,13 @@
     </option>
   </component>
   <component name="IdProvider" IDEtalkID="B0F86989228928B8B63B48A6D987D63F" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />

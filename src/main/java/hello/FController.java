@@ -1,28 +1,22 @@
 package hello;
 
         import javax.inject.Inject;
-        import javax.servlet.http.HttpServlet;
         import javax.servlet.http.HttpServletRequest;
-        import javax.servlet.http.HttpServletResponse;
-        import javax.swing.text.html.HTMLDocument;
 
-        import org.apache.catalina.connector.Response;
+        import com.mongodb.gridfs.GridFSDBFile;
         import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-        import org.springframework.http.HttpMethod;
         import org.springframework.http.HttpStatus;
         import org.springframework.http.ResponseEntity;
         import org.springframework.social.facebook.api.*;
         import org.springframework.stereotype.Controller;
-        import org.springframework.ui.Model;
         import org.springframework.web.bind.annotation.PathVariable;
         import org.springframework.web.bind.annotation.RequestMapping;
         import org.springframework.web.bind.annotation.RequestMethod;
-        import org.springframework.social.oauth2.OAuth2Operations;
-        import org.springframework.web.bind.annotation.ResponseBody;
 
+        import java.io.FileOutputStream;
+        import java.io.OutputStream;
         import java.util.ArrayList;
         import java.util.List;
-        import java.util.Objects;
 
 @Controller
 @EnableAutoConfiguration
@@ -75,7 +69,7 @@ public class FController {
     public Object getPhotos(@PathVariable String albumId){
         MediaOperations media = facebook.mediaOperations();
 
-        PagedList<Photo> listOfPhotos = media.getPhotos(albumId);
+         PagedList<Photo> listOfPhotos = media.getPhotos(albumId);
 
 
         List<String> photos = new ArrayList<>();
@@ -86,9 +80,17 @@ public class FController {
 
         }
 
-        GridFsAppStore.writeToMongo(photos.get(0));
+        ImageOperations imageOperations=new ImageOperations();
 
-        return new ResponseEntity<List>(photos,HttpStatus.OK);
+      //writing the first album's first photo
+
+        imageOperations.writeToMongo(photos.get(0));
+
+      //reading the Image to afile from the database
+
+        imageOperations.readFromMongo();
+
+        return new ResponseEntity<String>("done reading and writing from MongoDB",HttpStatus.OK);
     }
 
     /**
